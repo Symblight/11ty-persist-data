@@ -1,0 +1,1 @@
+import './fetch-app/index.js'

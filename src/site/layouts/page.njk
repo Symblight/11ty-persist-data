@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet">
+    <title>Lit Fetch Eleventy</title>
+    <!-- MUST be loaded before any lit bundle. allows hydration of SSRd components -->
+    <link href='js/app.js' rel='preload' as='script'>
+    <script>
+      // Service workers require HTTPS (http://goo.gl/lq4gCo). If we're running on a real web server (as opposed to localhost
+      // on a custom port, which is allowed), then change the protocol to HTTPS.
+      if ((!location.port || location.port == "80") && location.protocol != 'https:') {
+        location.protocol = 'https:';
+      }
+    </script>
+    <link rel="preload" href="/fonts/Mona-Sans.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles/index.css">
+    <script defer src="/scripts/index.js"></script>
+    <script type="module" src="/js/is-land.js"></script>
+    <script type="module" src="/js/base.js"></script>
+    {% include "partials/script-loader.njk" %}
+  </head>
+  <body>
+    <wb-fetch-app>
+      <header class="header">
+        <div class="header__container">
+          <a href="/">Home</a>
+          <a href="/profile">Profile</a>
+          <a href="/album">Album</a>
+        </div>
+      </header>
+      <main>
+        <div class="page-container">{{ content | safe }}</div>
+      </main>
+    </wb-fetch-app>
+    <script src="/js/service-worker.js"></script>
+  </body>
+</html>
