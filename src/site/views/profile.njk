@@ -2,20 +2,20 @@
 <section class="container">
     <div>
         <div>
-            <is-land>
-            <wb-profile-posts>
-                <div class="posts">
-                    <div class="card"></div>
-                    <div class="card"></div>
-                </div>
-            </wb-profile-posts>
+            <is-land on:visible import="/js/profile.js">
+                <wb-profile-posts>
+                    <div class="posts">
+                        <div class="card"></div>
+                        <div class="card"></div>
+                    </div>
+                </wb-profile-posts>
             </is-land>
         </div>
 
     </div>
     <section>
         <div class="card">
-            <is-land>
+            <is-land on:visible import="/js/profile.js">
                 <wb-profile-card>
                     <div class="fields">
                         <div class="field">

@@ -13,6 +13,10 @@ dist-ssr
 _site
 *.local
 
+.cache
+server/functions/possum/*
+!server/functions/possum/index.js
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,3 +27,4 @@ _site
 *.njsproj
 *.sln
 *.sw?
+

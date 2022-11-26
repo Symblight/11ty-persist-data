@@ -2,10 +2,18 @@ const { join } = require("path");
 const fg = require("fast-glob");
 const htmlmin = require("html-minifier-terser");
 const esbuild = require("esbuild");
+const { EleventyServerlessBundlerPlugin } = require("@11ty/eleventy");
 
 module.exports = (config) => {
   config.addWatchTarget("./src/lib/**/*.js");
   config.addWatchTarget("./src/lib");
+
+  // Render on first-request
+  config.addPlugin(EleventyServerlessBundlerPlugin, {
+    name: "possum",
+    functionsDir: "./server/functions",
+    redirects: false,
+  });
 
   // HTML
 
