@@ -1,7 +1,12 @@
 const { join } = require("path");
-const fg = require("fast-glob");
 const htmlmin = require("html-minifier-terser");
 const esbuild = require("esbuild");
+const postcss = require("postcss");
+const postcssCustomMedia = require("postcss-custom-media");
+const autoprefixer = require("autoprefixer");
+const minmax = require("postcss-media-minmax");
+const csso = require("postcss-csso");
+const pimport = require("postcss-import");
 const { EleventyServerlessBundlerPlugin } = require("@11ty/eleventy");
 
 module.exports = (config) => {
@@ -11,8 +16,9 @@ module.exports = (config) => {
   // Render on first-request
   config.addPlugin(EleventyServerlessBundlerPlugin, {
     name: "possum",
-    functionsDir: "./server/functions",
+    functionsDir: "./serverless/functions",
     redirects: false,
+    copy: [{ from: "./utils/package.json", to: "./package.json" }]
   });
 
   // HTML
@@ -34,49 +40,44 @@ module.exports = (config) => {
   });
 
   config.addTemplateFormats("css");
-  // const styles = ["./src/site/styles/index.css"];
-  // const postcssPlugins = [
-  //   pimport,
-  //   autoprefixer,
-  //   csso,
-  //   minmax,
-  //   postcssHasPseudo,
-  //   postcssCustomMedia,
-  //   ptheme({
-  //     darkSelector: '[data-theme="dark"]',
-  //     lightSelector: '[data-theme="light"]',
-  //   }),
-  // ];
+  const styles = ["./src/site/styles/index.css"];
+  const postcssPlugins = [
+    pimport,
+    autoprefixer,
+    csso,
+    minmax,
+    postcssCustomMedia,
+  ];
 
-  // config.addExtension("css", {
-  //   outputFileExtension: "css",
-  //   compile: async (inputContent, inputPath) => {
-  //     if (!styles.includes(inputPath)) {
-  //       return;
-  //     }
+  config.addExtension("css", {
+    outputFileExtension: "css",
+    compile: async (inputContent, inputPath) => {
+      if (!styles.includes(inputPath)) {
+        return;
+      }
 
-  //     return async () => {
-  //       let output = await postcss(postcssPlugins).process(inputContent, {
-  //         from: inputPath,
-  //       });
+      return async () => {
+        let output = await postcss(postcssPlugins).process(inputContent, {
+          from: inputPath,
+        });
 
-  //       return output.css;
-  //     };
-  //   },
-  // });
+        return output.css;
+      };
+    },
+  });
 
-  // config.addNunjucksAsyncFilter("css", (path, callback) => {
-  //   fs.readFile(path, "utf8", (error, content) => {
-  //     console.log(content);
-  //     postcss(postcssPlugins)
-  //       .process(content, {
-  //         from: path,
-  //       })
-  //       .then((output) => {
-  //         callback(null, output.css);
-  //       });
-  //   });
-  // });
+  config.addNunjucksAsyncFilter("css", (path, callback) => {
+    fs.readFile(path, "utf8", (error, content) => {
+      console.log(content);
+      postcss(postcssPlugins)
+        .process(content, {
+          from: path,
+        })
+        .then((output) => {
+          callback(null, output.css);
+        });
+    });
+  });
 
   // JavaScript
 

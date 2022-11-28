@@ -18,16 +18,28 @@ const pages = fg.sync([join(pagesDir), join(ssrDir)], {
   ignore: [],
   unique: true,
 });
-const inputs = ["./src/lib/app.js", "./src/lib/components/base.js", "./src/lib/service-worker.js"];
+const inputs = ["./src/lib/app.js", "./src/lib/components/base.js"];
 
 const plugins = [
   nodeResolve(),
   commonjs(),
-  generateSW({
-    swDest: "dist/js/service-worker.js",
-    globDirectory: "dist/js",
-  }),
+  // generateSW({
+  //   swDest: "dist/js/service-worker.js",
+  //   globDirectory: "dist/",
+  // }),
 ];
+
+const swConfig = {
+  input: ["./src/lib/service-worker.js"],
+  output: {
+    dir: "dist/",
+    format: "esm",
+  },
+  watch: {
+    clearScreen: false,
+  },
+  plugins: [...plugins],
+};
 
 const devConfig = {
   input: [...inputs, ...pages],
@@ -36,7 +48,6 @@ const devConfig = {
     format: "esm",
   },
   watch: {
-    // By default rollup clears the console on every build. This disables that.
     clearScreen: false,
   },
   plugins: [...plugins, del({ targets: "dist/js" })],
@@ -64,8 +75,8 @@ const productionConfig = {
 export default () => {
   switch (process.env.NODE_ENV) {
     case "production":
-      return productionConfig;
+      return [swConfig, productionConfig];
     default:
-      return devConfig;
+      return [swConfig, devConfig];
   }
 };

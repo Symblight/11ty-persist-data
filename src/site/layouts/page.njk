@@ -13,13 +13,6 @@
     <title>Lit Fetch Eleventy</title>
     <!-- MUST be loaded before any lit bundle. allows hydration of SSRd components -->
     <link href='js/app.js' rel='preload' as='script'>
-    <script>
-      // Service workers require HTTPS (http://goo.gl/lq4gCo). If we're running on a real web server (as opposed to localhost
-      // on a custom port, which is allowed), then change the protocol to HTTPS.
-      if ((!location.port || location.port == "80") && location.protocol != 'https:') {
-        location.protocol = 'https:';
-      }
-    </script>
     <link rel="preload" href="/fonts/Mona-Sans.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/styles/index.css">
     <script defer src="/scripts/index.js"></script>
@@ -28,18 +21,21 @@
     {% include "partials/script-loader.njk" %}
   </head>
   <body>
-    <wb-fetch-app>
-      <header class="header">
-        <div class="header__container">
+    <header class="header">
+      <div class="header__container">
+        <div class="left-side">
           <a href="/">Home</a>
           <a href="/profile">Profile</a>
           <a href="/album">Album</a>
+          <a href="/cats/fact">
+            Cat fact (Serveless)</a>
         </div>
-      </header>
-      <main>
-        <div class="page-container">{{ content | safe }}</div>
-      </main>
-    </wb-fetch-app>
-    <script src="/js/service-worker.js"></script>
+        <wb-header-app></wb-header-app>
+      </div>
+    </header>
+    <main>
+      <div class="page-container">{{ content | safe }}</div>
+    </main>
+    <script src="/service-worker.js"></script>
   </body>
 </html>

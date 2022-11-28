@@ -35,10 +35,14 @@ header > a {
 .header__container {
   padding-left: 1rem;
   padding-right: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 a {
   color: white;
+  text-decoration: none;
 }
 
 main {

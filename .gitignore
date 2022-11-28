@@ -14,8 +14,8 @@ _site
 *.local
 
 .cache
-server/functions/possum/*
-!server/functions/possum/index.js
+serverless/functions/possum/*
+!serverless/functions/possum/index.js
 
 # Editor directories and files
 .vscode/*
@@ -28,3 +28,7 @@ server/functions/possum/*
 *.sln
 *.sw?
 
+localhost-key.pem
+localhost.pem
+
+.env

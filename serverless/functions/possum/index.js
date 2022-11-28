@@ -8,7 +8,7 @@ async function handler(event) {
   let elev = new EleventyServerless("possum", {
     path: new URL(event.rawUrl).pathname,
     query: event.multiValueQueryStringParameters || event.queryStringParameters,
-    functionsDir: "./server/functions",
+    functionsDir: "./serverless/functions",
   });
 
   try {

@@ -7,11 +7,19 @@ const indexedDB =
 
 export class IndexedDB {
   constructor(params = {}) {
-    const { dbName, dbVersion = 1, onupgradeneeded = null } = params;
+    const {
+      dbName,
+      dbVersion = 1,
+      onupgradeneeded = null,
+      onsuccess = null,
+      onerror = null,
+    } = params;
     this.db = null;
     this.dbName = dbName;
     this.dbVersion = dbVersion;
     this.onupgradeneededCallback = onupgradeneeded;
+    this.onsuccessCallback = onsuccess;
+    this.onerrorCallback = onerror;
 
     if (!indexedDB) {
       throw Error("This browser doesn't support IndexedDB");
@@ -24,18 +32,22 @@ export class IndexedDB {
 
       if (this.onupgradeneededCallback) {
         dbOpen.onupgradeneeded = (e) => {
+          console.log("onupgradeneeded");
           this.db = dbOpen.result;
-          onupgradeneededCallback(e);
+          this.onupgradeneededCallback(e);
           resolve(dbOpen.result, e);
         };
       }
 
       dbOpen.onsuccess = (e) => {
+        console.log("onsuccess");
         this.db = dbOpen.result;
+        this.onsuccessCallback?.(e);
         resolve(dbOpen.result, e);
       };
 
       dbOpen.onerror = (e) => {
+        this.onerrorCallback?.(e);
         reject(dbOpen.error, e);
       };
     });

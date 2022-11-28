@@ -45,10 +45,10 @@ class ProfilePosts extends LitElement {
     return html`
       <div class="posts">
         ${this.posts.map(
-          (post) => html`<div class="card">
+          (post) => html`<a class="card" href="/posts/${post.id}">
             <span>${post.title}</span>
             <p>${post.body}</p>
-          </div>`
+          </a>`
         )}
       </div>
     `;

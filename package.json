@@ -10,7 +10,11 @@
     "build": "cross-env NODE_ENV=production npm-run-all cleanup rollup build:11ty",
     "rollup": "rollup -c",
     "watch:rollup": "rollup -c -w",
-    "dev": "npm-run-all cleanup --parallel watch:rollup watch:11ty"
+    "dev": "npm-run-all cleanup --parallel watch:rollup watch:11ty",
+    "ssr:dev": "npm-run-all cleanup build:11ty --parallel watch:rollup server:dev",
+    "ssr": "cross-env NODE_ENV=production npm-run-all cleanup build:11ty --parallel rollup server",
+    "server:dev": "nodemon ./server.cjs",
+    "server": "node ./server.cjs"
   },
   "keywords": [],
   "author": "",
@@ -19,10 +23,17 @@
     "@11ty/eleventy": "^2.0.0-canary.16",
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "autoprefixer": "^10.4.13",
     "cross-env": "^7.0.3",
     "fast-glob": "^3.2.12",
     "html-minifier-terser": "^7.0.0",
+    "nodemon": "^2.0.20",
     "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.17",
+    "postcss-csso": "^6.0.1",
+    "postcss-custom-media": "^8.0.2",
+    "postcss-import": "^15.0.0",
+    "postcss-media-minmax": "^5.0.0",
     "rollup": "^2.79.1",
     "rollup-plugin-brotli": "^3.1.0",
     "rollup-plugin-delete": "^2.0.0",
@@ -31,9 +42,17 @@
   },
   "dependencies": {
     "@11ty/is-land": "^3.0.0",
+    "auth0-js": "^9.19.2",
+    "body-parser": "^1.20.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "effector": "^22.4.0",
     "esbuild": "^0.15.15",
-    "lit": "^2.4.1"
+    "express": "^4.18.2",
+    "express-openid-connect": "^2.10.0",
+    "lit": "^2.4.1",
+    "serve-favicon": "^2.5.0"
   },
   "description": ""
 }

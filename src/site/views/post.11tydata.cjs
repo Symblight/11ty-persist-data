@@ -1,8 +1,5 @@
 module.exports = {
   layout: "page.njk",
-  permalink: {
-    build: "/posts/",
-    possum: "/:slug/post",
-  },
+  permalink: "/posts/[post]/index.html",
   title: "Home",
 };

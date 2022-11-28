@@ -7,14 +7,14 @@ const setDb = createEvent();
 
 $db.on(setDb, (_, db) => db);
 
-const DB_NAME = "test-db01";
-const DB_VERSION = 1;
+const DB_NAME = "test-db02";
+const DB_VERSION = 2;
 
 function initDb(db) {
   console.log("Creating stores");
 
   if (!db.objectStoreNames.contains("profile")) {
-    console.log("Creating a store profile");
+    console.log("Creating a store profile", db.objectStoreNames);
     const postsOS = db.createObjectStore("profile", { keyPath: "id" });
     postsOS.createIndex("id", "id", { unique: true });
   }
@@ -23,13 +23,14 @@ function initDb(db) {
 export const request = new IndexedDB({
   dbName: DB_NAME,
   dbVersion: DB_VERSION,
-  onupgradeneededCallback: (db) => {
-    initDb(db);
-    setDb(request);
+  onupgradeneeded: (e) => {
+    // version change
+    // init
+    initDb(e.target.result);
   },
+  onsuccess: (e) => {
+    setDb(e.target.result);
+  }
 });
 
-request.open().then((db) => {
-  initDb(db);
-  setDb(request);
-});
+request.open()
